@@ -4,9 +4,11 @@ import {Server} from "socket.io"
 import {createServer} from 'node:http'
 import dotenv from 'dotenv'
 import { createClient } from "@libsql/client"
-
+import path from "node:path"
 const port = process.env.PORT ?? 3000
 const  app = express()
+app.use(express.static( path.join(process.cwd(), '/client')))
+
 const server = createServer(app)
 const io = new Server(server,{
     connectionStateRecovery:{
