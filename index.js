@@ -35,15 +35,14 @@ io.on('connection',async(socket)=>{
                 sql:"INSERT INTO messages(content,user) VALUES (:msg,:user)",
                 args:{msg,user}
             })
-            console.log(result)
         }catch(e){
             console.error(e)
             return
         }
         io.emit("chat message", msg,result.lastInsertRowid.toString(),user)
     })
-    if(!socket.recovered){//<- recuperarse los mensaje sin conexion
         try{
+
             const results = await db.execute({
                 sql:'SELECT id, content,user from messages WHERE id >?',
                 args:[socket.handshake.auth.serverOffset ??0]
@@ -55,7 +54,7 @@ io.on('connection',async(socket)=>{
             console.error(e)
         }
 
-    }
+    
 })
 
 app.use(logger('dev'))
